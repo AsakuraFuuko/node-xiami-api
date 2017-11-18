@@ -14,7 +14,7 @@ class Artist {
   }
 
   top100Songs (page = 1) {
-    return this.constructor.getArtistTop100Songs(this.id, page)
+    return this.constructor.getTop100Songs(this.id, page)
   }
 
   tracklist () {
@@ -46,7 +46,7 @@ class Artist {
   }
 
   static getTop100Songs (id, page = 1) {
-    return crawler.getTop100Songs(id, page)
+    return crawler.getArtistTop100Songs(id, page)
   }
 
   static convertStringIdToNumberId (stringId) {
