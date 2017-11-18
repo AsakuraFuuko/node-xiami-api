@@ -14,7 +14,7 @@ class Artist {
   }
 
   top100Songs (page = 1) {
-    return this.constructor.getTop100Songs(this.id, page)
+    return this.constructor.getArtistTop100Songs(this.id, page)
   }
 
   tracklist () {
