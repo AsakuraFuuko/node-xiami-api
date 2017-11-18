@@ -395,7 +395,8 @@ function getArtistTop100Songs (id, page = 1) {
       res.on('data', (chunk) => { rawData += chunk })
       res.on('end', () => {
         const $ = cheerio.load(rawData)
-        const total = parseInt($('.all_page > span').text().match(/(\d+).{2}$/)[1])
+        let pages = $('.all_page > span').text().match(/(\d+).{2}$/)
+        const total = !!pages ? parseInt(pages[1]) : $('.track_list > tbody > tr').length
         if (total === 0) {
           resolve(null)
           return
