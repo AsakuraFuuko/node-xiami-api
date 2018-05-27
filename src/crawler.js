@@ -77,7 +77,7 @@ function getFeaturedCollectionContent (id, userToken = null) {
       }
     }
 
-    http.get(options, (res) => {
+    https.get(options, (res) => {
       const { statusCode } = res
 
       let error
@@ -111,7 +111,7 @@ function getFeaturedCollectionContent (id, userToken = null) {
         const id = parseInt($('#qrcode > span').text())
 
         let coverURL = $('.bigImgCover > img').attr('src').replace(/@.*$/, '')
-        coverURL = coverURL === 'http://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
+        coverURL = coverURL === 'https://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
 
         $('.quote_song_list > ul > li').each((_, element) => {
           const $element = $(element)
@@ -126,12 +126,12 @@ function getFeaturedCollectionContent (id, userToken = null) {
           let introduction = _editorTextFormatToString($element.find('#des_').text().trim())
           introduction = introduction === '' ? null : introduction
 
-          $element.find('.song_name > a[href^="/artist/"], .song_name > a[href^="http://www.xiami.com/search/find"]').each((_, element) => {
+          $element.find('.song_name > a[href^="/artist/"], .song_name > a[href^="//www.xiami.com/search/find"]').each((_, element) => {
             const $element = $(element)
             const href = $element.attr('href')
 
             const name = $element.text().trim()
-            const id = href.match(/^http:\/\/www\.xiami\.com\/search\/find.*/) !== null ? null : href.match(/\w+$/)[0]
+            const id = href.match(/^\/\/www\.xiami\.com\/search\/find.*/) !== null ? null : href.match(/\w+$/)[0]
             artists.push({ name, id })
           })
 
@@ -156,7 +156,7 @@ function getFeaturedCollectionContent (id, userToken = null) {
 
 function getArtistIdByName (name) {
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/search/find?artist=${encodeURIComponent(name)}`, (res) => {
+    https.get(`https://www.xiami.com/search/find?artist=${encodeURIComponent(name)}`, (res) => {
       const { statusCode, headers } = res
 
       let error
@@ -185,7 +185,7 @@ function getArtistIdByName (name) {
 function searchArtists (keyword, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/search/artist/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
+    https.get(`https://www.xiami.com/search/artist/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -279,7 +279,7 @@ function getArtistIdByNameOrSearch (nameOrKeyword) {
 function getArtistProfile (id) {
   return new Promise((resolve, reject) => {
     const query = (id) => {
-      http.get(`http://www.xiami.com/artist/profile-${id}`, (res) => {
+      https.get(`https://www.xiami.com/artist/profile-${id}`, (res) => {
         const { statusCode } = res
 
         let error
@@ -325,7 +325,7 @@ function getArtistProfile (id) {
 function getArtistAlbums (id, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/artist/album-${id}?page=${page}`, (res) => {
+    https.get(`https://www.xiami.com/artist/album-${id}?page=${page}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -377,7 +377,7 @@ function getArtistAlbums (id, page = 1) {
 function getArtistTop100Songs (id, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/artist/top-${id}?page=${page}`, (res) => {
+    https.get(`https://www.xiami.com/artist/top-${id}?page=${page}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -428,7 +428,7 @@ function getArtistTop100Songs (id, page = 1) {
 
 function convertArtistStringIdToNumberId (stringId) {
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/artist/similar-${stringId}`, (res) => {
+    https.get(`https://www.xiami.com/artist/similar-${stringId}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -466,7 +466,7 @@ function getAlbumContent (id, userToken = null) {
       }
     }
 
-    http.get(options, (res) => {
+    https.get(options, (res) => {
       const { statusCode } = res
 
       let error
@@ -537,7 +537,7 @@ function getSongContent (id, userToken = null) {
       }
     }
 
-    http.get(options, (res) => {
+    https.get(options, (res) => {
       const { statusCode } = res
 
       let error
@@ -596,7 +596,7 @@ function getTracklist (type, id, userToken = null) {
       }
     }
 
-    http.get(options, (res) => {
+    https.get(options, (res) => {
       const { statusCode } = res
 
       let error
@@ -677,11 +677,11 @@ function getFeaturedCollectionTracklist (id, userToken = null) {
 
 function getSongHQAudioURL (id) {
   return new Promise((resolve, reject) => {
-    http.get({
+    https.get({
       hostname: 'www.xiami.com',
       path: `/song/gethqsong/sid/${id}`,
       headers: {
-        'Referer': 'http://www.xiami.com/'
+        'Referer': 'https://www.xiami.com/'
       }
     }, (res) => {
       const { statusCode } = res
@@ -716,7 +716,7 @@ function getSongHQAudioURL (id) {
 function getUserFavoredSongs (id, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/space/lib-song/u/${id}/page/${page}`, (res) => {
+    https.get(`https://www.xiami.com/space/lib-song/u/${id}/page/${page}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -762,7 +762,7 @@ function getUserFavoredSongs (id, page = 1) {
             const href = $element.attr('href')
 
             const name = $element.attr('title').trim()
-            const id = href.match(/^http:\/\/www\.xiami\.com\/search\/find.*/) !== null ? null : href.match(/\w+$/)[0]
+            const id = href.match(/^\/\/www\.xiami\.com\/search\/find.*/) !== null ? null : href.match(/\w+$/)[0]
             artists.push({ id, name })
           })
 
@@ -780,7 +780,7 @@ function getUserFavoredSongs (id, page = 1) {
 function getUserFavoredAlbums (id, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/space/lib-album/u/${id}/page/${page}`, (res) => {
+    https.get(`https://www.xiami.com/space/lib-album/u/${id}/page/${page}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -838,7 +838,7 @@ function getUserFavoredAlbums (id, page = 1) {
 function getUserFavoredFeaturedCollections (id, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/space/collect-fav/u/${id}/page/${page}`, (res) => {
+    https.get(`https://www.xiami.com/space/collect-fav/u/${id}/page/${page}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -875,7 +875,7 @@ function getUserFavoredFeaturedCollections (id, page = 1) {
           const $author = $element.find('.author > a')
 
           let coverURL = $cover.attr('src').replace(/@.*$/, '')
-          coverURL = coverURL === 'http://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
+          coverURL = coverURL === 'https://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
 
           const title = $cover.attr('alt').trim()
           const id = parseInt($element.attr('id').match(/\d+/)[0])
@@ -898,7 +898,7 @@ function getUserFavoredFeaturedCollections (id, page = 1) {
 function getUserCreatedFeaturedCollections (id, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/space/collect/u/${id}/page/${page}`, (res) => {
+    https.get(`https://www.xiami.com/space/collect/u/${id}/page/${page}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -934,7 +934,7 @@ function getUserCreatedFeaturedCollections (id, page = 1) {
           const $cover = $element.find('.cover img')
 
           let coverURL = $cover.attr('src').replace(/@.*$/, '')
-          coverURL = coverURL === 'http://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
+          coverURL = coverURL === 'https://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
 
           const title = $cover.attr('alt').trim()
           const id = parseInt($element.find('.name a').attr('href').match(/\d+/)[0])
@@ -953,7 +953,7 @@ function getUserCreatedFeaturedCollections (id, page = 1) {
 function getUserFavoredArtists (id, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/space/lib-artist/u/${id}/page/${page}`, (res) => {
+    https.get(`https://www.xiami.com/space/lib-artist/u/${id}/page/${page}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -990,7 +990,7 @@ function getUserFavoredArtists (id, page = 1) {
           const $name = $element.find('.name > a > strong')
 
           let photoURL = $photo.attr('src').replace(/@.*$/, '')
-          photoURL = photoURL === 'http://pic.xiami.net/res/img/default/cd100.gif' ? null : url.parse(photoURL)
+          photoURL = photoURL === 'https://pic.xiami.net/res/img/default/cd100.gif' ? null : url.parse(photoURL)
 
           let id = $element.attr('id').match(/\d+/)
           if (id === null) {
@@ -1016,7 +1016,7 @@ function getUserFavoredArtists (id, page = 1) {
 
 function getUserProfile (id) {
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/u/${id}`, (res) => {
+    https.get(`https://www.xiami.com/u/${id}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -1137,7 +1137,7 @@ function getRadioTracklist (type, id) {
       path: `/radio/xml/type/${type}/id/${id}`
     }
 
-    http.get(options, (res) => {
+    https.get(options, (res) => {
       const { statusCode } = res
 
       let error
@@ -1212,7 +1212,7 @@ function getArtistRadioTracklist (id) {
 function searchSongs (keyword, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/search/song/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
+    https.get(`https://www.xiami.com/search/song/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -1251,7 +1251,7 @@ function searchSongs (keyword, page = 1) {
 
           const id = parseInt($input.attr('value').trim())
           const canBePlayed = $input.is(':checked')
-          const title = $element.find('.song_name > a[href^="http://www.xiami.com/song/"]').attr('title').trim()
+          const title = $element.find('.song_name > a[href^="//www.xiami.com/song/"]').attr('title').trim()
 
           const artists = []
           $element.find('.song_artist > a').each((_, element) => {
@@ -1286,7 +1286,7 @@ function searchSongs (keyword, page = 1) {
 function searchAlbums (keyword, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/search/album/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
+    https.get(`https://www.xiami.com/search/album/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -1320,7 +1320,7 @@ function searchAlbums (keyword, page = 1) {
 
         $('.albumBlock_list > ul > li').each((_, element) => {
           const $element = $(element)
-          const $name = $element.find('.name > a[href^="http://www.xiami.com/album/"]')
+          const $name = $element.find('.name > a[href^="//www.xiami.com/album/"]')
           const $artist = $element.find('.singer')
 
           const id = $name.attr('href').match(/\w+$/)[0]
@@ -1352,7 +1352,7 @@ function searchAlbums (keyword, page = 1) {
 function searchFeaturedCollections (keyword, page = 1) {
   if (page < 1) throw new Error('Argument `page` must more than or equal to 1')
   return new Promise((resolve, reject) => {
-    http.get(`http://www.xiami.com/search/collect/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
+    https.get(`https://www.xiami.com/search/collect/page/${page}?key=${encodeURIComponent(keyword)}`, (res) => {
       const { statusCode } = res
 
       let error
@@ -1387,7 +1387,7 @@ function searchFeaturedCollections (keyword, page = 1) {
         $('.block_list > ul > li').each((_, element) => {
           const $element = $(element)
           const $title = $element.find('h3 > a')
-          const $author = $element.find('.collect_info a[href^="http://www.xiami.com/u/"]')
+          const $author = $element.find('.collect_info a[href^="//www.xiami.com/u/"]')
 
           const id = parseInt($title.attr('href').match(/\d+$/)[0])
           const title = $title.attr('title')
@@ -1398,7 +1398,7 @@ function searchFeaturedCollections (keyword, page = 1) {
           }
 
           let coverURL = $('.block_cover img').attr('src').replace(/@.*$/, '')
-          coverURL = coverURL === 'http://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
+          coverURL = coverURL === 'https://pic.xiami.net/res/img/default/collect_default_cover.png' ? null : url.parse(coverURL)
 
           data.push({ id, title, author, coverURL })
         })
@@ -1425,12 +1425,12 @@ function addUserFavorite (id, type, userToken) {
       path: '/ajax/addtag',
       headers: {
         'Cookie': `member_auth=${userToken}; _xiamitoken=1`,
-        'Referer': 'http://www.xiami.com/',
+        'Referer': 'https://www.xiami.com/',
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     }
 
-    const req = http.request(options, (res) => {
+    const req = https.request(options, (res) => {
       const { statusCode } = res
 
       let error
@@ -1490,11 +1490,11 @@ function deleteUserFavorite (id, type, userToken) {
       path: `/ajax/${type === FAVORITE_TYPE_FEATURED_COLLECTION ? 'collect-fav-del' : 'space-lib-del'}?${queryType}=${id}&_xiamitoken=1`,
       headers: {
         'Cookie': `member_auth=${userToken}; _xiamitoken=1`,
-        'Referer': 'http://www.xiami.com/'
+        'Referer': 'https://www.xiami.com/'
       }
     }
 
-    http.get(options, (res) => {
+    https.get(options, (res) => {
       const { statusCode } = res
 
       let error
